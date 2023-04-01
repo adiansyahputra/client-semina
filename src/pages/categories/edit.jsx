@@ -4,10 +4,13 @@ import SBreadCrumb from '../../components/Breadcrumb';
 import SAlert from '../../components/Alert';
 import Form from './form';
 import { useNavigate, useParams } from 'react-router-dom';
+import { getData, putData } from '../../utils/fetch';
+import { useDispatch } from 'react-redux';
+import { notifActions } from '../../redux/notif/notifSlice';
 
 function CategoryEdit() {
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   const { categoryId } = useParams();
   const [form, setForm] = useState({
     name: '',
@@ -26,8 +29,9 @@ function CategoryEdit() {
   };
 
   const fetchOneCategories = async () => {
-    // const res = await getData(`api/v1/categories/${categoryId}`);
-    // setForm({ ...form, name: res.data.data.name });
+    const res = await getData(`/cms/categories/${categoryId}`);
+
+    setForm({ ...form, name: res.data.data.name });
   };
 
   useEffect(() => {
@@ -38,10 +42,16 @@ function CategoryEdit() {
   const handleSubmit = async () => {
     setIsLoading(true);
     try {
-      // const res = await putData(`api/v1/categories/${categoryId}`, form);
-
-      navigate('/categories');
+      const res = await putData(`/cms/categories/${categoryId}`, form);
+      dispatch(
+        notifActions.setNotif({
+          status: 'true',
+          typeNotif: 'success',
+          message: `berhasil ubah kategori ${res.data.data.name}`,
+        })
+      );
       setIsLoading(false);
+      navigate('/categories');
     } catch (err) {
       setIsLoading(false);
       setAlert({
@@ -53,7 +63,7 @@ function CategoryEdit() {
     }
   };
   return (
-    <Container>
+    <Container className="mt-3">
       <SBreadCrumb
         textSecound={'Categories'}
         urlSecound={'/categories'}
