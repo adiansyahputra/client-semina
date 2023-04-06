@@ -4,6 +4,7 @@ import authSlice from './auth/authSlice';
 import categoriesSlice from './categories/categoriesSlice';
 import notifSlice from './notif/notifSlice';
 import talentsSlice from './talents/talentsSlice';
+import paymentsSlice from './payments/paymentsSlice';
 
 const store = configureStore({
   reducer: {
@@ -11,6 +12,7 @@ const store = configureStore({
     categories: categoriesSlice.reducer,
     notif: notifSlice.reducer,
     talents: talentsSlice.reducer,
+    payments: paymentsSlice.reducer,
   },
 });
 
