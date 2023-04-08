@@ -5,6 +5,8 @@ import categoriesSlice from './categories/categoriesSlice';
 import notifSlice from './notif/notifSlice';
 import talentsSlice from './talents/talentsSlice';
 import paymentsSlice from './payments/paymentsSlice';
+import eventsSlice from './events/eventsSlice';
+import listsSlice from './lists/listsSlice';
 
 const store = configureStore({
   reducer: {
@@ -13,6 +15,8 @@ const store = configureStore({
     notif: notifSlice.reducer,
     talents: talentsSlice.reducer,
     payments: paymentsSlice.reducer,
+    events: eventsSlice.reducer,
+    lists: listsSlice.reducer,
   },
 });
 
