@@ -10,12 +10,12 @@ import { eventsActions } from '../../redux/events/eventsSlice';
 import { fetchEvents } from '../../redux/events/eventsActions';
 import SAlert from '../../components/Alert';
 import Swal from 'sweetalert2';
-import { deleteData } from '../../utils/fetch';
+import { deleteData, putData } from '../../utils/fetch';
 import { notifActions } from '../../redux/notif/notifSlice';
 import SelectBox from '../../components/SelectBox';
 import {
   fetchListCategories,
-  fetchListSpeakers,
+  fetchListTalents,
 } from '../../redux/lists/listsActions';
 
 function EventPage() {
@@ -28,10 +28,10 @@ function EventPage() {
 
   useEffect(() => {
     dispatch(fetchEvents());
-  }, [dispatch, events.keyword, events.category, events.speaker]);
+  }, [dispatch, events.keyword, events.category, events.talent]);
 
   useEffect(() => {
-    dispatch(fetchListSpeakers());
+    dispatch(fetchListTalents());
     dispatch(fetchListCategories());
   }, [dispatch]);
 
@@ -53,7 +53,37 @@ function EventPage() {
           notifActions.setNotif({
             status: true,
             typeNotif: 'success',
-            message: `berhasil hapus speaker ${res.data.data.name}`,
+            message: `berhasil hapus talent ${res.data.data.title}`,
+          })
+        );
+
+        dispatch(fetchEvents());
+      }
+    });
+  };
+
+  const handleChangeStatus = (id, status) => {
+    Swal.fire({
+      title: 'Apa kamu yakin?',
+      text: '',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Iya, Ubah Status',
+      cancelButtonText: 'Batal',
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const payload = {
+          statusEvent: status === 'Published' ? 'Draft' : 'Published',
+        };
+        const res = await putData(`/cms/events/${id}/status`, payload);
+
+        dispatch(
+          notifActions.setNotif({
+            status: true,
+            typeNotif: 'success',
+            message: `berhasil ubah status event ${res.data.data.title}`,
           })
         );
 
@@ -63,7 +93,7 @@ function EventPage() {
   };
 
   return (
-    <Container>
+    <Container className="mt-3">
       <BreadCrumb textSecound={'Events'} />
       <div className="mb-3">
         <SButton action={() => navigate('/events/create')}>Tambah</SButton>
@@ -86,32 +116,32 @@ function EventPage() {
           <SelectBox
             placeholder={'Masukan pencarian kategori'}
             name="category"
-            value={events.categories}
+            value={events.category}
             options={lists.categories}
             isClearable={true}
-            handleChange={(e) =>
+            handleChange={(e) => {
               dispatch(
                 eventsActions.setCategory({
                   category: e,
                 })
-              )
-            }
+              );
+            }}
           />
         </Col>
         <Col>
           <SelectBox
             placeholder={'Masukan pencarian pembicara'}
-            name="speaker"
-            value={events.speaker}
-            options={lists.speakers}
+            name="talents"
+            value={events.talent}
+            options={lists.talents}
             isClearable={true}
-            handleChange={(e) =>
+            handleChange={(e) => {
               dispatch(
                 eventsActions.setTalent({
                   talent: e,
                 })
-              )
-            }
+              );
+            }}
           />
         </Col>
       </Row>
@@ -121,11 +151,38 @@ function EventPage() {
       )}
       <Table
         status={events.status}
-        thead={['Judul', 'Tanggal', 'Tempat', 'Kategori', 'Pembicara', 'Aksi']}
+        thead={[
+          'Judul',
+          'Tanggal',
+          'Tempat',
+          'Status',
+          'Kategori',
+          'Pembicara',
+          'Aksi',
+        ]}
         data={events.data}
-        tbody={['title', 'date', 'venueName', 'categoryName', 'talentName']}
+        tbody={[
+          'title',
+          'date',
+          'venueName',
+          'statusEvent',
+          'categoryName',
+          'talentName',
+        ]}
         editUrl={`/events/edit`}
         deleteAction={(id) => handleDelete(id)}
+        customAction={(id, status = '') => {
+          return (
+            <SButton
+              className={'mx-2'}
+              variant="primary"
+              size={'sm'}
+              action={() => handleChangeStatus(id, status)}
+            >
+              Change Status
+            </SButton>
+          );
+        }}
         withoutPagination
       />
     </Container>

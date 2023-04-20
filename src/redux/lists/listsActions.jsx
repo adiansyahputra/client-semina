@@ -3,7 +3,7 @@ import debounce from 'debounce-promise';
 import { listsActions } from './listsSlice';
 
 let debouncedFetchListsCategories = debounce(getData, 1000);
-let debouncedFetchListsSpeakers = debounce(getData, 1000);
+let debouncedFetchListsTalents = debounce(getData, 1000);
 let debouncedFetchListsEvents = debounce(getData, 1000);
 
 export const fetchListCategories = () => {
@@ -34,12 +34,12 @@ export const fetchListCategories = () => {
   };
 };
 
-export const fetchListSpeakers = () => {
+export const fetchListTalents = () => {
   return async (dispatch) => {
-    dispatch(listsActions.startFetchingListsSpeakers());
+    dispatch(listsActions.startFetchingListsTalents());
 
     try {
-      let res = await debouncedFetchListsSpeakers('/cms/talents');
+      let res = await debouncedFetchListsTalents('/cms/talents');
 
       let _temp = [];
 
@@ -47,17 +47,17 @@ export const fetchListSpeakers = () => {
         _temp.push({
           value: res._id,
           label: res.name,
-          target: { value: res._id, name: 'speaker' },
+          target: { value: res._id, name: 'talent' },
         });
       });
 
       dispatch(
-        listsActions.successFetchingListsSpeakers({
-          speakers: _temp,
+        listsActions.successFetchingListsTalents({
+          talents: _temp,
         })
       );
     } catch (error) {
-      dispatch(listsActions.errorFetchingListsSpeakers());
+      dispatch(listsActions.errorFetchingListsTalents());
     }
   };
 };

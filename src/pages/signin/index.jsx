@@ -36,7 +36,6 @@ function PageSignin() {
         authActions.userLogin({
           token: res.data.data.token,
           role: res.data.data.role,
-          email: res.data.data.email,
         })
       );
       setIsLoading(false);

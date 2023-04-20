@@ -7,6 +7,7 @@ import talentsSlice from './talents/talentsSlice';
 import paymentsSlice from './payments/paymentsSlice';
 import eventsSlice from './events/eventsSlice';
 import listsSlice from './lists/listsSlice';
+import ordersSlice from './orders/ordersSlice';
 
 const store = configureStore({
   reducer: {
@@ -17,7 +18,12 @@ const store = configureStore({
     payments: paymentsSlice.reducer,
     events: eventsSlice.reducer,
     lists: listsSlice.reducer,
+    orders: ordersSlice.reducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
 });
 
 export default store;

@@ -86,6 +86,7 @@ function Categories() {
       {notif.status && (
         <SAlert type={notif.typeNotif} message={notif.message} />
       )}
+
       <Table
         status={categories.status}
         thead={['Nama', 'Aksi']}

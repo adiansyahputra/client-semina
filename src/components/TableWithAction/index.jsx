@@ -1,21 +1,21 @@
 import React from 'react';
 import { Table } from 'react-bootstrap';
-// import Pagination from '../Pagination';
+import Pagination from '../Pagination';
 import Tbody from '../TbodyWithAction';
 import Thead from '../Thead';
 
 function TableWithAction({
   withoutPagination,
-  actionNotDisplay,
   handlePageClick,
+  actionNotDisplay,
   data,
   thead,
   tbody,
   editUrl,
   deleteAction,
-  pages,
   customAction,
   status,
+  pages,
 }) {
   return (
     <>
@@ -31,11 +31,11 @@ function TableWithAction({
           customAction={customAction}
         />
       </Table>
-      {/* {!withoutPagination && data.length ? (
+      {!withoutPagination && data.length ? (
         <Pagination pages={pages} handlePageClick={handlePageClick} />
       ) : (
         ''
-      )} */}
+      )}
     </>
   );
 }

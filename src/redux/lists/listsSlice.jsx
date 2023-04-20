@@ -10,8 +10,8 @@ const statuslist = {
 const initialState = {
   categories: [],
   statusCategories: statuslist.idle,
-  speakers: [],
-  statusSpeakers: statuslist.idle,
+  talents: [],
+  statusTalents: statuslist.idle,
   events: [],
   statusEvents: statuslist.idle,
 };
@@ -33,17 +33,17 @@ const listsSlice = createSlice({
         categories: action.payload.categories,
       };
     },
-    startFetchingListsSpeakers(state, action) {
-      return { ...state, statusSpeakers: statuslist.process };
+    startFetchingListsTalents(state, action) {
+      return { ...state, statusTalents: statuslist.process };
     },
-    errorFetchingListsSpeakers(state, action) {
-      return { ...state, statusSpeakers: statuslist.error };
+    errorFetchingListsTalents(state, action) {
+      return { ...state, statusTalents: statuslist.error };
     },
-    successFetchingListsSpeakers(state, action) {
+    successFetchingListsTalents(state, action) {
       return {
         ...state,
-        statusSpeakers: statuslist.success,
-        speakers: action.payload.speakers,
+        statusTalents: statuslist.success,
+        talents: action.payload.talents,
       };
     },
     startFetchingListsEvents(state, action) {

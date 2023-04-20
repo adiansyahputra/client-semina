@@ -83,7 +83,6 @@ function TalentsPage() {
         </div>
       )}
       <SearchInput
-        name="keyword"
         query={talents.keyword}
         handleChange={(e) =>
           dispatch(
